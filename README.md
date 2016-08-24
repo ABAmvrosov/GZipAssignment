@@ -1,0 +1,2 @@
+# GZipAssignment
+Multithread implementation.
