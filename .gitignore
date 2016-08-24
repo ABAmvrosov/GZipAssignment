@@ -9,6 +9,8 @@
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
+/TestFiles
+/GZipTests
 
 # Build results
 [Dd]ebug/
