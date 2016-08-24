@@ -10,6 +10,25 @@ namespace GZipTest
 
         protected override void Routine()
         {
+            try {
+                ReadFile();
+            }
+            catch (FileNotFoundException e) {
+                Console.WriteLine(e.Message);
+                Environment.Exit(ERROR_CODE);
+            }            
+            catch (FileFormatException e) {
+                Console.WriteLine(e.Message);
+                Environment.Exit(ERROR_CODE);
+            }
+            catch (WrongMemberFormatException e) {
+                Console.WriteLine(e.Message);
+                Environment.Exit(ERROR_CODE);
+            }
+        }
+
+        private void ReadFile()
+        {
             using (FileStream sourceStream = new FileStream(_sourceFile, FileMode.Open)) {
                 while (sourceStream.Position != sourceStream.Length) {
                     byte[] extendedHeader = new byte[20];

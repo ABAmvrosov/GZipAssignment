@@ -56,7 +56,6 @@ namespace GZipTest
             background.Start();
         }
 
-
         private static bool IsEnoughParameters(string[] args)
         {
             if (args.Length < 3) {
@@ -75,24 +74,12 @@ namespace GZipTest
 
         private static void Compress(string fileToCompress, string resultArchiveName)
         {
-            try {
-                new GZip().Compress(fileToCompress, resultArchiveName);
-            }
-            catch (Exception e) {
-                Console.WriteLine(e.StackTrace);
-                Environment.Exit(ERROR_CODE);
-            }
+            new GZip().Compress(fileToCompress, resultArchiveName);
         }
 
         private static void Decompress(string archiveToDecompress, string resultFileName)
         {
-            try {
-                new GZip().Decompress(archiveToDecompress, resultFileName);
-            }
-            catch (Exception e) {
-                Console.Write(e.StackTrace);
-                Environment.Exit(ERROR_CODE);
-            }
+            new GZip().Decompress(archiveToDecompress, resultFileName);
         }
     }
 }

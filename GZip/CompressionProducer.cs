@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -20,6 +21,16 @@ namespace GZipTest
         public CompressionProducer(string sourceFile, BlockingCollection<byte[]> targetCollection) : base(sourceFile, targetCollection) { }
 
         protected override void Routine()
+        {
+            try {
+                ReadFile();
+            }
+            catch (FileNotFoundException e) {
+                Environment.Exit(ERROR_CODE);
+            }
+        }
+
+        private void ReadFile()
         {
             using (FileStream sourceStream = new FileStream(_sourceFile, FileMode.Open)) {
                 if (sourceStream.Length == 0) {

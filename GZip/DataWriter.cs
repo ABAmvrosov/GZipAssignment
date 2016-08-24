@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Threading;
 
@@ -9,6 +10,7 @@ namespace GZipTest
     /// </summary>
     internal class DataWriter
     {
+        private const int ERROR_CODE = 1;
         private ConsumerSynchronizer _synchronizer;
         private Thread _writingThread;  
         private string _targetFile;
@@ -21,6 +23,17 @@ namespace GZipTest
         }
 
         private void Routine()
+        {
+            try {
+                WriteFile();
+            }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+                Environment.Exit(ERROR_CODE);
+            }
+        }
+
+        private void WriteFile()
         {
             using (FileStream targetSteam = File.Create(_targetFile)) {
                 int index = 0;

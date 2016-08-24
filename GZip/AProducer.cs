@@ -8,6 +8,7 @@ namespace GZipTest
     /// </summary>
     internal abstract class AProducer
     {
+        protected const int ERROR_CODE = 1;
         protected const int WAIT_TIME = 25;
         protected const int MEGABYTE = 1024 * 1024;
         protected string _sourceFile;

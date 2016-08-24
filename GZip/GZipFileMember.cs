@@ -57,7 +57,7 @@ namespace GZipTest
         public static int GetMemberSize(byte[] extendedHeader)
         {
             if (!HasFlag(extendedHeader, Flags.FEXTRA) | !IsSubfieldIDsCorrect(extendedHeader))
-                throw new WrongMemberFormatException();
+                throw new WrongMemberFormatException("Wrong algorithm!");
             int result = 0;
             result = BitConverter.ToInt32(extendedHeader, INFO_INDEX);
             return result;

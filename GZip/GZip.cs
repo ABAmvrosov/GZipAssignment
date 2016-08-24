@@ -7,6 +7,7 @@ namespace GZipTest
 {
     public sealed class GZip
     {
+        private const int ERROR_CODE = 1;
         private BlockingCollection<byte[]> _readData = new BlockingCollection<byte[]>();
         private ConcurrentDictionary<int, byte[]> _processedData = new ConcurrentDictionary<int, byte[]>();
         private ConsumerSynchronizer synchronizer;
@@ -32,16 +33,10 @@ namespace GZipTest
 
         public void Decompress(string archiveToDecompress, string resultFileName)
         {
-            try {
-                MultiThreadDecompress(archiveToDecompress, resultFileName);
-            }
-            catch (WrongMemberFormatException e) {
-                Console.WriteLine("Wrong member format! Trying default algorith.");
-                SingleThreadDecompress(archiveToDecompress, resultFileName);
-            }
+            MultiThreadDecompress(archiveToDecompress, resultFileName);
         }
 
-        private void MultiThreadDecompress(string archiveToDecompress, string resultFileName)
+        public void MultiThreadDecompress(string archiveToDecompress, string resultFileName)
         {
             AProducer producer = new DecompressionProducer(archiveToDecompress, _readData);
             AConsumer[] consumers = new DecompressionConsumer[Environment.ProcessorCount];
@@ -53,15 +48,6 @@ namespace GZipTest
             producer.Start();
             writer.Start();
             writer.Join();
-        }
-
-        private void SingleThreadDecompress(string archiveToDecompress, string resultFileName)
-        {
-            using (FileStream targetStream = new FileStream(resultFileName, FileMode.Append))
-            using (FileStream sourceStream = new FileStream(archiveToDecompress, FileMode.Open))
-            using (GZipStream decompressionStream = new GZipStream(sourceStream, CompressionMode.Decompress)) {
-                decompressionStream.CopyTo(targetStream);
-            }
         }
     }
 }
