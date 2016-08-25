@@ -39,11 +39,15 @@ namespace GZipTest
                     return;
                 }
                 PerformanceCounter ramCounter = new PerformanceCounter("Memory", "Available Bytes");
-                byte[] buffer = new byte[_bufferSize];
+                byte[] buffer;
                 while (!IsEndOfStream(sourceStream)) {
+                    buffer = new byte[_bufferSize];
                     if (!IsEnoughMemory(ramCounter)) {
                         Thread.Sleep(WAIT_TIME);
                         continue;
+                    }
+                    if (_bufferSize > sourceStream.Length - sourceStream.Position) {
+                        buffer = new byte[sourceStream.Length - sourceStream.Position];
                     }
                     sourceStream.Read(buffer, 0, buffer.Length);
                     _readData.Add(buffer);
